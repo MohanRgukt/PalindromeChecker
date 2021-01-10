@@ -37,12 +37,9 @@ public class MessageSubscriber implements MessageListener {
 	public void onMessage(Message message, byte[] pattern) {
 
 		try {
-
-			log.info("Consumed Message===" + message);
 			PalindromeInput pi = objectMapper.readValue(message.toString(), PalindromeInput.class);
 			palindromeDto.save(pi);
 			sendMessageToWs.sendMessageToBot(message.toString(), sender, topic, new ChatMessage());
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -42,7 +42,7 @@ public class RedisPubSubConfig {
 	public RedisTemplate<String, Object> redisTemplate() {
 		RedisTemplate<String, Object> template = new RedisTemplate<>();
 		template.setConnectionFactory(connFactory());
-		template.setValueSerializer(new GenericToStringSerializer<Object>(Object.class));
+		template.setValueSerializer(new GenericToStringSerializer<>(Object.class));
 		return template;
 
 	}
