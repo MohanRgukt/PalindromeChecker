@@ -19,6 +19,6 @@ public class MessagePublisher {
 
 	public String publish(PalindromeInput palindrome) {
 		template.convertAndSend(topic.getTopic(), palindrome.toString());
-		return "Event Published successfully";
+		return "Event Published";
 	}
 }
