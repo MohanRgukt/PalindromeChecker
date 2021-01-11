@@ -37,11 +37,14 @@ public class MessageSubscriber implements MessageListener {
 	public void onMessage(Message message, byte[] pattern) {
 
 		try {
+			log.info("Message Subscribed");
 			PalindromeInput pi = objectMapper.readValue(message.toString(), PalindromeInput.class);
 			palindromeDto.save(pi);
+			log.info("Data Saved to DB");
 			sendMessageToWs.sendMessageToBot(message.toString(), sender, topic, new ChatMessage());
+			log.info("Message Published to webSocket");
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e.getLocalizedMessage());
 		}
 
 	}

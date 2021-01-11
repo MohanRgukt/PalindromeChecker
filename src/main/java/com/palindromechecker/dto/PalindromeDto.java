@@ -3,6 +3,8 @@ package com.palindromechecker.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -25,6 +27,8 @@ public class PalindromeDto {
 	@Value("${websocket.topic}")
 	private String TOPIC;
 
+	Logger log = LoggerFactory.getLogger(PalindromeDto.class);
+
 	@Autowired
 	LongestPalindrome longestPalindrome;
 
@@ -35,21 +39,29 @@ public class PalindromeDto {
 
 	public List<PalindromeStringCalc> findall() {
 
-		List<Object> dataList = palindromeTemplate.opsForHash().values(HASH_KEY);
+		log.info("Received Get Request");
+
 		List<PalindromeStringCalc> palindList = new ArrayList<>();
 
-		for (Object prd : dataList) {
-			PalindromeInput palind = (PalindromeInput) prd;
-			String palindromeString = longestPalindrome.longestPalindrome(palind.getContent());
+		try {
+			List<Object> dataList = palindromeTemplate.opsForHash().values(HASH_KEY);
+			for (Object prd : dataList) {
+				PalindromeInput palind = (PalindromeInput) prd;
+				String palindromeString = longestPalindrome.longestPalindrome(palind.getContent());
 
-			PalindromeStringCalc palindCalc = new PalindromeStringCalc();
+				PalindromeStringCalc palindCalc = new PalindromeStringCalc();
 
-			palindCalc.setContent(palind.getContent());
-			palindCalc.setTimeStamp(palind.getTimestamp());
-			palindCalc.setLongest_palindrome_size(palindromeString.length());
+				palindCalc.setContent(palind.getContent());
+				palindCalc.setTimeStamp(palind.getTimestamp());
+				palindCalc.setLongest_palindrome_size(palindromeString.length());
 
-			palindList.add(palindCalc);
+				palindList.add(palindCalc);
+			}
+		} catch (Exception e) {
+			log.error(e.getLocalizedMessage());
 		}
+
+		log.info("Get Request Completed");
 		return palindList;
 	}
 
