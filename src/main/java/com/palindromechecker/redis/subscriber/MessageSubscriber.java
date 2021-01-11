@@ -3,6 +3,7 @@ package com.palindromechecker.redis.subscriber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -29,10 +30,13 @@ public class MessageSubscriber implements MessageListener {
 
 	Logger log = LoggerFactory.getLogger(MessageSubscriber.class);
 
-	private String sender = "Spring-Redis";
+	
+	@Value("${websocket.sender}")
+	private String SENDER;
 
-	private String topic = "/topic/public";
-
+	@Value("${websocket.topic}")
+	private String TOPIC;
+	
 	@Override
 	public void onMessage(Message message, byte[] pattern) {
 
@@ -41,7 +45,7 @@ public class MessageSubscriber implements MessageListener {
 			PalindromeInput pi = objectMapper.readValue(message.toString(), PalindromeInput.class);
 			palindromeDto.save(pi);
 			log.info("Data Saved to DB");
-			sendMessageToWs.sendMessageToBot(message.toString(), sender, topic, new ChatMessage());
+			sendMessageToWs.sendMessageToBot(message.toString(), SENDER, TOPIC, new ChatMessage());
 			log.info("Message Published to webSocket");
 		} catch (Exception e) {
 			log.error(e.getLocalizedMessage());
