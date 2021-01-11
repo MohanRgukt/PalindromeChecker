@@ -22,7 +22,7 @@ public class PalindromeController {
 	@Autowired
 	private PalindromeHandler palindromHandler;
 		
-	@PostMapping()
+	@PostMapping("/save")
 	public String save(@RequestBody PalindromeInput palindromeInput) {
 		if(palindromeInput.getContent()!=null && palindromeInput.getTimestamp()!=null) {
 			palindromHandler.save(palindromeInput);
@@ -31,7 +31,7 @@ public class PalindromeController {
 		return "Invalid Parameter";
 	}
 	
-	@GetMapping()
+	@GetMapping("/findAll")
 	public List<PalindromeStringCalc> getAllProducts(){
 		return palindromHandler.getAllProducts();
 	}

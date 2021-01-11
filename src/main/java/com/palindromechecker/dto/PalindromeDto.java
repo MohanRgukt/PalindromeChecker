@@ -47,7 +47,7 @@ public class PalindromeDto {
 			List<Object> dataList = palindromeTemplate.opsForHash().values(HASH_KEY);
 			for (Object prd : dataList) {
 				PalindromeInput palind = (PalindromeInput) prd;
-				String palindromeString = longestPalindrome.longestPalindrome(palind.getContent());
+				String palindromeString = longestPalindrome.longestPalindrome(palind.getContent().toUpperCase());
 
 				PalindromeStringCalc palindCalc = new PalindromeStringCalc();
 

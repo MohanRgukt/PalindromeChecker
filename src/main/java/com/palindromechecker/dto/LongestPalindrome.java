@@ -24,7 +24,8 @@ public class LongestPalindrome {
 
 	private int expandAroundCenter(String s, int left, int right) {
 		int L = left, R = right;
-		while (L >= 0 && R < s.length() && s.charAt(L) == s.charAt(R) && !Character.isDigit(s.charAt(L)) && !Character.isDigit(s.charAt(R))) {
+		while (L >= 0 && R < s.length() && s.charAt(L) == s.charAt(R) && ((int) s.charAt(L) >= 65)
+				&& ((int) s.charAt(L) <= 90) && ((int) s.charAt(R) >= 65) && ((int) s.charAt(R) <= 90)) {
 			L--;
 			R++;
 		}
@@ -32,13 +33,12 @@ public class LongestPalindrome {
 	}
 
 	private String hasOnlyDigits(String s) {
-		
-		if(s.charAt(0)>='0' && s.charAt(0)<='9') {
+
+		if (s.charAt(0) >= '0' && s.charAt(0) <= '9') {
 			return "";
 		}
-		
+
 		return s;
 	}
-	
-	
+
 }
